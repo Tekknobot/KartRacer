@@ -1,0 +1,84 @@
+[gd_scene load_steps=17 format=3 uid="uid://bs718t2q2dqa8"]
+
+[ext_resource type="Script" uid="uid://byi7ou3hhumb1" path="res://Kart.gd" id="1_5l0yq"]
+[ext_resource type="Texture2D" uid="uid://by4vdi7ecrvm7" path="res://Sprites/png/mario/mario_1.png" id="2_ub6im"]
+[ext_resource type="Texture2D" uid="uid://cf8c04fml2aay" path="res://Sprites/png/mario/mario_2.png" id="3_5upoy"]
+[ext_resource type="Texture2D" uid="uid://ce2wl7a02ktxo" path="res://Sprites/png/mario/mario_3.png" id="4_miaf1"]
+[ext_resource type="Texture2D" uid="uid://c5mnlpext4k43" path="res://Sprites/png/mario/mario_4.png" id="5_in51y"]
+[ext_resource type="Texture2D" uid="uid://pgfg30xorn5o" path="res://Sprites/png/mario/mario_5.png" id="6_shohp"]
+[ext_resource type="Texture2D" uid="uid://sxv1wgaf0368" path="res://Sprites/png/mario/mario_6.png" id="7_b7x05"]
+[ext_resource type="Texture2D" uid="uid://dx6grvey2rmov" path="res://Sprites/png/mario/mario_7.png" id="8_b86nx"]
+[ext_resource type="Texture2D" uid="uid://d1dm1ol3fmyff" path="res://Sprites/png/mario/mario_8.png" id="9_30c05"]
+[ext_resource type="Texture2D" uid="uid://cgsoifuc8i4uy" path="res://Sprites/png/mario/mario_9.png" id="10_tmso3"]
+[ext_resource type="Texture2D" uid="uid://byegyocnq26g" path="res://Sprites/png/mario/mario_10.png" id="11_yu5qi"]
+[ext_resource type="Texture2D" uid="uid://d1hmh6je3rjxi" path="res://Sprites/png/mario/mario_11.png" id="12_s2nvf"]
+[ext_resource type="Texture2D" uid="uid://5q7phroasjcw" path="res://Sprites/png/mario/mario_12.png" id="13_5qqf5"]
+[ext_resource type="Script" uid="uid://c5mryp28rc7xw" path="res://BillboardSpriteFromSheet.gd" id="14_paeel"]
+[ext_resource type="Script" uid="uid://dqmcv8abtu04d" path="res://AIDriver.gd" id="15_ub6im"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o3ebs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ub6im")
+}],
+"loop": false,
+"name": &"drive_demo",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ub6im")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_5upoy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_miaf1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_in51y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_shohp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_b7x05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_b86nx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_30c05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_tmso3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_yu5qi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_s2nvf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_5qqf5")
+}],
+"loop": true,
+"name": &"turn_right",
+"speed": 5.0
+}]
+
+[node name="Kart" type="Node3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+script = ExtResource("1_5l0yq")
+
+[node name="KartCam" type="Camera3D" parent="."]
+current = true
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
+sprite_frames = SubResource("SpriteFrames_o3ebs")
+animation = &"turn_right"
+script = ExtResource("14_paeel")
+
+[node name="AIDriver" type="Node3D" parent="."]
+script = ExtResource("15_ub6im")

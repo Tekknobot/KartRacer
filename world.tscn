@@ -1,72 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://c7utjuh0i0whl"]
+[gd_scene load_steps=9 format=3 uid="uid://c7utjuh0i0whl"]
 
-[ext_resource type="Script" uid="uid://byi7ou3hhumb1" path="res://Kart.gd" id="3_2u3nc"]
-[ext_resource type="Texture2D" uid="uid://by4vdi7ecrvm7" path="res://Sprites/png/mario/mario_1.png" id="4_2u3nc"]
-[ext_resource type="Script" uid="uid://c5mryp28rc7xw" path="res://BillboardSpriteFromSheet.gd" id="4_aqk2v"]
-[ext_resource type="Texture2D" uid="uid://cf8c04fml2aay" path="res://Sprites/png/mario/mario_2.png" id="5_udxuc"]
-[ext_resource type="Texture2D" uid="uid://ce2wl7a02ktxo" path="res://Sprites/png/mario/mario_3.png" id="6_ikiii"]
-[ext_resource type="Texture2D" uid="uid://c5mnlpext4k43" path="res://Sprites/png/mario/mario_4.png" id="7_cbp6q"]
-[ext_resource type="Texture2D" uid="uid://pgfg30xorn5o" path="res://Sprites/png/mario/mario_5.png" id="8_26xuy"]
-[ext_resource type="Texture2D" uid="uid://sxv1wgaf0368" path="res://Sprites/png/mario/mario_6.png" id="9_bc84e"]
-[ext_resource type="Texture2D" uid="uid://dx6grvey2rmov" path="res://Sprites/png/mario/mario_7.png" id="10_wukud"]
-[ext_resource type="Texture2D" uid="uid://d1dm1ol3fmyff" path="res://Sprites/png/mario/mario_8.png" id="11_il2jm"]
-[ext_resource type="Texture2D" uid="uid://cgsoifuc8i4uy" path="res://Sprites/png/mario/mario_9.png" id="12_wjb0r"]
-[ext_resource type="Texture2D" uid="uid://byegyocnq26g" path="res://Sprites/png/mario/mario_10.png" id="13_mc2jv"]
-[ext_resource type="Texture2D" uid="uid://d1hmh6je3rjxi" path="res://Sprites/png/mario/mario_11.png" id="14_bo7i5"]
-[ext_resource type="Texture2D" uid="uid://5q7phroasjcw" path="res://Sprites/png/mario/mario_12.png" id="15_4h6ng"]
+[ext_resource type="PackedScene" uid="uid://uvgkywaemv2h" path="res://kart.tscn" id="1_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://bs718t2q2dqa8" path="res://AIDriver.tscn" id="5_036b0"]
 [ext_resource type="Shader" uid="uid://bcg6sb2cydvfl" path="res://TrackShader.gdshader" id="15_hiqwa"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_o3ebs"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("4_2u3nc")
-}],
-"loop": false,
-"name": &"drive_demo",
-"speed": 12.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("4_2u3nc")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_udxuc")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_ikiii")
-}, {
-"duration": 1.0,
-"texture": ExtResource("7_cbp6q")
-}, {
-"duration": 1.0,
-"texture": ExtResource("8_26xuy")
-}, {
-"duration": 1.0,
-"texture": ExtResource("9_bc84e")
-}, {
-"duration": 1.0,
-"texture": ExtResource("10_wukud")
-}, {
-"duration": 1.0,
-"texture": ExtResource("11_il2jm")
-}, {
-"duration": 1.0,
-"texture": ExtResource("12_wjb0r")
-}, {
-"duration": 1.0,
-"texture": ExtResource("13_mc2jv")
-}, {
-"duration": 1.0,
-"texture": ExtResource("14_bo7i5")
-}, {
-"duration": 1.0,
-"texture": ExtResource("15_4h6ng")
-}],
-"loop": true,
-"name": &"turn_right",
-"speed": 5.0
-}]
+[ext_resource type="Script" uid="uid://et2x726t5pxe" path="res://TrackPathBuilder.gd" id="17_ikiii"]
+[ext_resource type="Script" uid="uid://7sscxo7b2tjo" path="res://RaceManager.gd" id="17_udxuc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2u3nc"]
 render_priority = 0
@@ -97,19 +35,32 @@ shader_parameter/warning_inner_offset = 0.0
 material = SubResource("ShaderMaterial_2u3nc")
 size = Vector2(5000, 5000)
 
+[sub_resource type="Curve3D" id="Curve3D_dwbse"]
+closed = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 1125, 0, 725, 0, 0, 0, 0, 0, 0, 984.375, 0, 725, 0, 0, 0, 0, 0, 0, 843.75, 0, 725, 0, 0, 0, 0, 0, 0, 703.125, 0, 725, 0, 0, 0, 0, 0, 0, 562.5, 0, 725, 0, 0, 0, 0, 0, 0, 421.875, 0, 725, 0, 0, 0, 0, 0, 0, 281.25, 0, 725, 0, 0, 0, 0, 0, 0, 140.625, 0, 725, 0, 0, 0, 0, 0, 0, 0, 0, 725, 0, 0, 0, 0, 0, 0, -140.625, 0, 725, 0, 0, 0, 0, 0, 0, -281.25, 0, 725, 0, 0, 0, 0, 0, 0, -421.875, 0, 725, 0, 0, 0, 0, 0, 0, -562.5, 0, 725, 0, 0, 0, 0, 0, 0, -703.125, 0, 725, 0, 0, 0, 0, 0, 0, -843.75, 0, 725, 0, 0, 0, 0, 0, 0, -984.375, 0, 725, 0, 0, 0, 0, 0, 0, -1125, 0, 725, 0, 0, 0, 0, 0, 0, -1147.89, 0, 724.251, 0, 0, 0, 0, 0, 0, -1170.68, 0, 722.006, 0, 0, 0, 0, 0, 0, -1193.28, 0, 718.275, 0, 0, 0, 0, 0, 0, -1215.59, 0, 713.074, 0, 0, 0, 0, 0, 0, -1237.5, 0, 706.426, 0, 0, 0, 0, 0, 0, -1258.94, 0, 698.358, 0, 0, 0, 0, 0, 0, -1279.8, 0, 688.905, 0, 0, 0, 0, 0, 0, -1300, 0, 678.109, 0, 0, 0, 0, 0, 0, -1319.45, 0, 666.014, 0, 0, 0, 0, 0, 0, -1338.07, 0, 652.674, 0, 0, 0, 0, 0, 0, -1355.77, 0, 638.144, 0, 0, 0, 0, 0, 0, -1372.49, 0, 622.487, 0, 0, 0, 0, 0, 0, -1388.14, 0, 605.771, 0, 0, 0, 0, 0, 0, -1402.67, 0, 588.067, 0, 0, 0, 0, 0, 0, -1416.01, 0, 569.45, 0, 0, 0, 0, 0, 0, -1428.11, 0, 550, 0, 0, 0, 0, 0, 0, -1438.91, 0, 529.801, 0, 0, 0, 0, 0, 0, -1448.36, 0, 508.939, 0, 0, 0, 0, 0, 0, -1456.43, 0, 487.504, 0, 0, 0, 0, 0, 0, -1463.07, 0, 465.587, 0, 0, 0, 0, 0, 0, -1468.27, 0, 443.282, 0, 0, 0, 0, 0, 0, -1472.01, 0, 420.684, 0, 0, 0, 0, 0, 0, -1474.25, 0, 397.891, 0, 0, 0, 0, 0, 0, -1475, 0, 375, 0, 0, 0, 0, 0, 0, -1475, 0, 375, 0, 0, 0, 0, 0, 0, -1475, 0, 328.125, 0, 0, 0, 0, 0, 0, -1475, 0, 281.25, 0, 0, 0, 0, 0, 0, -1475, 0, 234.375, 0, 0, 0, 0, 0, 0, -1475, 0, 187.5, 0, 0, 0, 0, 0, 0, -1475, 0, 140.625, 0, 0, 0, 0, 0, 0, -1475, 0, 93.7501, 0, 0, 0, 0, 0, 0, -1475, 0, 46.8749, 0, 0, 0, 0, 0, 0, -1475, 0, 0, 0, 0, 0, 0, 0, 0, -1475, 0, -46.875, 0, 0, 0, 0, 0, 0, -1475, 0, -93.7501, 0, 0, 0, 0, 0, 0, -1475, 0, -140.625, 0, 0, 0, 0, 0, 0, -1475, 0, -187.5, 0, 0, 0, 0, 0, 0, -1475, 0, -234.375, 0, 0, 0, 0, 0, 0, -1475, 0, -281.25, 0, 0, 0, 0, 0, 0, -1475, 0, -328.125, 0, 0, 0, 0, 0, 0, -1475, 0, -375, 0, 0, 0, 0, 0, 0, -1474.25, 0, -397.891, 0, 0, 0, 0, 0, 0, -1472.01, 0, -420.684, 0, 0, 0, 0, 0, 0, -1468.27, 0, -443.282, 0, 0, 0, 0, 0, 0, -1463.07, 0, -465.587, 0, 0, 0, 0, 0, 0, -1456.43, 0, -487.504, 0, 0, 0, 0, 0, 0, -1448.36, 0, -508.939, 0, 0, 0, 0, 0, 0, -1438.91, 0, -529.801, 0, 0, 0, 0, 0, 0, -1428.11, 0, -550, 0, 0, 0, 0, 0, 0, -1416.01, 0, -569.45, 0, 0, 0, 0, 0, 0, -1402.67, 0, -588.067, 0, 0, 0, 0, 0, 0, -1388.14, 0, -605.771, 0, 0, 0, 0, 0, 0, -1372.49, 0, -622.487, 0, 0, 0, 0, 0, 0, -1355.77, 0, -638.144, 0, 0, 0, 0, 0, 0, -1338.07, 0, -652.674, 0, 0, 0, 0, 0, 0, -1319.45, 0, -666.014, 0, 0, 0, 0, 0, 0, -1300, 0, -678.109, 0, 0, 0, 0, 0, 0, -1279.8, 0, -688.905, 0, 0, 0, 0, 0, 0, -1258.94, 0, -698.358, 0, 0, 0, 0, 0, 0, -1237.5, 0, -706.426, 0, 0, 0, 0, 0, 0, -1215.59, 0, -713.074, 0, 0, 0, 0, 0, 0, -1193.28, 0, -718.275, 0, 0, 0, 0, 0, 0, -1170.68, 0, -722.006, 0, 0, 0, 0, 0, 0, -1147.89, 0, -724.251, 0, 0, 0, 0, 0, 0, -1125, 0, -725, 0, 0, 0, 0, 0, 0, -1125, 0, -725, 0, 0, 0, 0, 0, 0, -984.375, 0, -725, 0, 0, 0, 0, 0, 0, -843.75, 0, -725, 0, 0, 0, 0, 0, 0, -703.125, 0, -725, 0, 0, 0, 0, 0, 0, -562.5, 0, -725, 0, 0, 0, 0, 0, 0, -421.875, 0, -725, 0, 0, 0, 0, 0, 0, -281.25, 0, -725, 0, 0, 0, 0, 0, 0, -140.625, 0, -725, 0, 0, 0, 0, 0, 0, 0, 0, -725, 0, 0, 0, 0, 0, 0, 140.625, 0, -725, 0, 0, 0, 0, 0, 0, 281.25, 0, -725, 0, 0, 0, 0, 0, 0, 421.875, 0, -725, 0, 0, 0, 0, 0, 0, 562.5, 0, -725, 0, 0, 0, 0, 0, 0, 703.125, 0, -725, 0, 0, 0, 0, 0, 0, 843.75, 0, -725, 0, 0, 0, 0, 0, 0, 984.375, 0, -725, 0, 0, 0, 0, 0, 0, 1125, 0, -725, 0, 0, 0, 0, 0, 0, 1147.89, 0, -724.251, 0, 0, 0, 0, 0, 0, 1170.68, 0, -722.006, 0, 0, 0, 0, 0, 0, 1193.28, 0, -718.275, 0, 0, 0, 0, 0, 0, 1215.59, 0, -713.074, 0, 0, 0, 0, 0, 0, 1237.5, 0, -706.426, 0, 0, 0, 0, 0, 0, 1258.94, 0, -698.358, 0, 0, 0, 0, 0, 0, 1279.8, 0, -688.905, 0, 0, 0, 0, 0, 0, 1300, 0, -678.109, 0, 0, 0, 0, 0, 0, 1319.45, 0, -666.014, 0, 0, 0, 0, 0, 0, 1338.07, 0, -652.674, 0, 0, 0, 0, 0, 0, 1355.77, 0, -638.144, 0, 0, 0, 0, 0, 0, 1372.49, 0, -622.487, 0, 0, 0, 0, 0, 0, 1388.14, 0, -605.771, 0, 0, 0, 0, 0, 0, 1402.67, 0, -588.067, 0, 0, 0, 0, 0, 0, 1416.01, 0, -569.45, 0, 0, 0, 0, 0, 0, 1428.11, 0, -550, 0, 0, 0, 0, 0, 0, 1438.91, 0, -529.801, 0, 0, 0, 0, 0, 0, 1448.36, 0, -508.939, 0, 0, 0, 0, 0, 0, 1456.43, 0, -487.504, 0, 0, 0, 0, 0, 0, 1463.07, 0, -465.587, 0, 0, 0, 0, 0, 0, 1468.27, 0, -443.282, 0, 0, 0, 0, 0, 0, 1472.01, 0, -420.684, 0, 0, 0, 0, 0, 0, 1474.25, 0, -397.891, 0, 0, 0, 0, 0, 0, 1475, 0, -375, 0, 0, 0, 0, 0, 0, 1475, 0, -375, 0, 0, 0, 0, 0, 0, 1475, 0, -328.125, 0, 0, 0, 0, 0, 0, 1475, 0, -281.25, 0, 0, 0, 0, 0, 0, 1475, 0, -234.375, 0, 0, 0, 0, 0, 0, 1475, 0, -187.5, 0, 0, 0, 0, 0, 0, 1475, 0, -140.625, 0, 0, 0, 0, 0, 0, 1475, 0, -93.7501, 0, 0, 0, 0, 0, 0, 1475, 0, -46.875, 0, 0, 0, 0, 0, 0, 1475, 0, 0, 0, 0, 0, 0, 0, 0, 1475, 0, 46.8749, 0, 0, 0, 0, 0, 0, 1475, 0, 93.7501, 0, 0, 0, 0, 0, 0, 1475, 0, 140.625, 0, 0, 0, 0, 0, 0, 1475, 0, 187.5, 0, 0, 0, 0, 0, 0, 1475, 0, 234.375, 0, 0, 0, 0, 0, 0, 1475, 0, 281.25, 0, 0, 0, 0, 0, 0, 1475, 0, 328.125, 0, 0, 0, 0, 0, 0, 1475, 0, 375, 0, 0, 0, 0, 0, 0, 1474.25, 0, 397.891, 0, 0, 0, 0, 0, 0, 1472.01, 0, 420.684, 0, 0, 0, 0, 0, 0, 1468.27, 0, 443.282, 0, 0, 0, 0, 0, 0, 1463.07, 0, 465.587, 0, 0, 0, 0, 0, 0, 1456.43, 0, 487.504, 0, 0, 0, 0, 0, 0, 1448.36, 0, 508.939, 0, 0, 0, 0, 0, 0, 1438.91, 0, 529.801, 0, 0, 0, 0, 0, 0, 1428.11, 0, 550, 0, 0, 0, 0, 0, 0, 1416.01, 0, 569.45, 0, 0, 0, 0, 0, 0, 1402.67, 0, 588.067, 0, 0, 0, 0, 0, 0, 1388.14, 0, 605.771, 0, 0, 0, 0, 0, 0, 1372.49, 0, 622.487, 0, 0, 0, 0, 0, 0, 1355.77, 0, 638.144, 0, 0, 0, 0, 0, 0, 1338.07, 0, 652.674, 0, 0, 0, 0, 0, 0, 1319.45, 0, 666.014, 0, 0, 0, 0, 0, 0, 1300, 0, 678.109, 0, 0, 0, 0, 0, 0, 1279.8, 0, 688.905, 0, 0, 0, 0, 0, 0, 1258.94, 0, 698.358, 0, 0, 0, 0, 0, 0, 1237.5, 0, 706.426, 0, 0, 0, 0, 0, 0, 1215.59, 0, 713.074, 0, 0, 0, 0, 0, 0, 1193.28, 0, 718.275, 0, 0, 0, 0, 0, 0, 1170.68, 0, 722.006, 0, 0, 0, 0, 0, 0, 1147.89, 0, 724.251, 0, 0, 0, 0, 0, 0, 1125, 0, 725),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 164
+
 [node name="World" type="Node3D"]
 
-[node name="Kart" type="Node3D" parent="."]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 754.486)
-script = ExtResource("3_2u3nc")
-
-[node name="KartCam" type="Camera3D" parent="Kart"]
-current = true
-
-[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="Kart"]
-sprite_frames = SubResource("SpriteFrames_o3ebs")
-animation = &"turn_right"
-script = ExtResource("4_aqk2v")
+[node name="Kart" parent="." instance=ExtResource("1_aqk2v")]
+spawn_point = NodePath("..")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_udxuc")
+
+[node name="TrackPathBuilder" type="Node3D" parent="." node_paths=PackedStringArray("track_plane", "path_node")]
+script = ExtResource("17_ikiii")
+track_plane = NodePath("../MeshInstance3D")
+path_node = NodePath("../Path3D")
+
+[node name="RaceManager" type="Node3D" parent="."]
+script = ExtResource("17_udxuc")
+kart_scene = ExtResource("5_036b0")
+path = NodePath("../Path3D")
+
+[node name="Path3D" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 741.235)
+curve = SubResource("Curve3D_dwbse")

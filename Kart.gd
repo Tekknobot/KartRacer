@@ -212,6 +212,21 @@ var _drift_phase := 0.0
 var _drift_env := 0.0  # envelope for squeal (attack/release)
 var _rng := RandomNumberGenerator.new()
 
+# ---- Add near other state vars ----
+var external_input := false
+var _ext_left := false
+var _ext_right := false
+var _ext_accel := false
+var _ext_brake := false
+var _ext_drift := false
+
+func set_external_input_state(left: bool, right: bool, accel: bool, brake: bool, drift: bool) -> void:
+	_ext_left = left
+	_ext_right = right
+	_ext_accel = accel
+	_ext_brake = brake
+	_ext_drift = drift
+
 # ============================ Lifecycle ============================
 func _ready() -> void:
 	_setup_camera_and_sprite()
@@ -229,6 +244,7 @@ func _process(dt: float) -> void:
 	_update_trails(dt)
 	_update_sprite_turn_anim(dt)
 	_update_audio(dt)  # <<< add this
+	if cam: cam.current = not external_input
 
 func _init_audio() -> void:
 	_rng.randomize()
@@ -328,11 +344,19 @@ func _physics_process(dt: float) -> void:
 
 func _fixed_step(dt: float) -> void:
 	# ------ Discrete input reads (digital only) ------
-	_btn_left  = Input.is_action_pressed("left")
-	_btn_right = Input.is_action_pressed("right")
-	_btn_accel = Input.is_action_pressed("accelerate")
-	_btn_brake = Input.is_action_pressed("brake")
-	_btn_drift = Input.is_action_pressed("drift")
+	if external_input:
+		_btn_left  = _ext_left
+		_btn_right = _ext_right
+		_btn_accel = _ext_accel
+		_btn_brake = _ext_brake
+		_btn_drift = _ext_drift
+	else:
+		_btn_left  = Input.is_action_pressed("left")
+		_btn_right = Input.is_action_pressed("right")
+		_btn_accel = Input.is_action_pressed("accelerate")
+		_btn_brake = Input.is_action_pressed("brake")
+		_btn_drift = Input.is_action_pressed("drift")
+
 
 	var steer_raw := 0.0
 	if _btn_left and not _btn_right: steer_raw = -1.0
@@ -630,7 +654,8 @@ func _update_sprite_turn_anim(dt: float) -> void:
 
 func _setup_camera_and_sprite() -> void:
 	if cam:
-		cam.current = true
+		# Only the player kart owns a camera
+		cam.current = not external_input
 		cam.transform.origin = Vector3(0, cam_height_offset, 64.0)
 		_cam_origin = cam.transform.origin
 		cam.look_at(global_position + Vector3(0, sprite_height, 0), Vector3.UP)
@@ -642,6 +667,7 @@ func _setup_camera_and_sprite() -> void:
 		sprite.fixed_size = use_fixed_size
 		sprite.pixel_size = sprite_pixel_size
 		sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+
 
 # ============================ Engine Shake ============================
 func _update_engine_shake(dt: float) -> void:

@@ -1,6 +1,7 @@
-MeshInstance3D
 Node3D
+Path3D
 Node
+MeshInstance3D
 AnimatedSprite3D
 TileMap
 Camera3D
