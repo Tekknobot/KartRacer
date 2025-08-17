@@ -1,0 +1,39 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1755462803
+BillboardSpriteFromSheet.gd::GDScript/GDScript::6904355088588812836::1755445300::0::1::::<>AnimatedSprite3D<><>0<>0<><>::
+checkered.png::CompressedTexture2D/CompressedTexture2D::6091286463448354249::1755451151::1755451153::1::::<><><>0<>0<>433dd55c61e98d61fb150d9093dbb148<>res://.godot/imported/checkered.png-48b5163ce93aef0f49d192df29821796.s3tc.ctex::
+icon.png::CompressedTexture2D/CompressedTexture2D::4371506539172662618::1755435738::1755422766::1::::<><><>0<>0<>1a6a137ba8f48b60afb56fa0ade5d04d<>res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.ctex::
+InputDefaults.gd::GDScript/GDScript::2481682460309595874::1755431624::0::1::::<>Node<><>0<>0<><>::
+Kart.gd::GDScript::4089436991971280732::1755462752::0::1::::<>Node3D<><>0<>0<><>::
+kart.png::CompressedTexture2D/CompressedTexture2D::8595076334566560541::1755436378::1755422766::1::::<><><>0<>0<>718b497764bfb9d7d720224621479517<>res://.godot/imported/kart.png-c5737cb3fde9da0272c057d2643e2bf1.ctex::
+main.tscn::PackedScene/PackedScene::104255990058606541::1755428792::0::1::::<><><>0<>0<><>::
+TrackAssembler.gd::GDScript::8903949456098018152::1755459369::0::1::::<>Node3D<><>0<>1<><>::
+TrackShader.gdshader::Shader::2541099102915727649::1755462795::0::1::::<><><>0<>0<><>::
+TrackView.gd::GDScript/GDScript::1662067829642718902::1755428311::0::1::::<>Sprite2D<><>0<>0<><>::
+white1x1.png::CompressedTexture2D/CompressedTexture2D::2296366051801714745::1755425203::1755425207::1::::<><><>0<>0<>52f7571464a8ff6a0f2f7dff80e3f6f3<>res://.godot/imported/white1x1.png-0b8ef93ee1fdbc23fe54ab06b7962197.ctex::
+world.tscn::PackedScene::7061342676320359161::1755462752::0::1::::<><><>0<>0<><>::uid://byi7ou3hhumb1::::res://Kart.gd<>uid://by4vdi7ecrvm7::::res://Sprites/png/mario/mario_1.png<>uid://c5mryp28rc7xw::::res://BillboardSpriteFromSheet.gd<>uid://cf8c04fml2aay::::res://Sprites/png/mario/mario_2.png<>uid://ce2wl7a02ktxo::::res://Sprites/png/mario/mario_3.png<>uid://c5mnlpext4k43::::res://Sprites/png/mario/mario_4.png<>uid://pgfg30xorn5o::::res://Sprites/png/mario/mario_5.png<>uid://sxv1wgaf0368::::res://Sprites/png/mario/mario_6.png<>uid://dx6grvey2rmov::::res://Sprites/png/mario/mario_7.png<>uid://d1dm1ol3fmyff::::res://Sprites/png/mario/mario_8.png<>uid://cgsoifuc8i4uy::::res://Sprites/png/mario/mario_9.png<>uid://byegyocnq26g::::res://Sprites/png/mario/mario_10.png<>uid://d1hmh6je3rjxi::::res://Sprites/png/mario/mario_11.png<>uid://5q7phroasjcw::::res://Sprites/png/mario/mario_12.png<>uid://bcg6sb2cydvfl::::res://TrackShader.gdshader
+::res://Sprites/::1755433931
+::res://Sprites/ase/::1755433857
+::res://Sprites/png/::1755433935
+::res://Sprites/png/mario/::1755438493
+mario_1.png::CompressedTexture2D/CompressedTexture2D::4132100769909071924::1755438634::1755438493::1::::<><><>0<>0<>109e0440c7ff26f59abe00f13a9cd942<>res://.godot/imported/mario_1.png-412974493caa6adcdbaf4d22fd86547e.ctex::
+mario_2.png::CompressedTexture2D/CompressedTexture2D::5192077661755654240::1755438634::1755438493::1::::<><><>0<>0<>892f608b73d8b0804f86b511c5783e47<>res://.godot/imported/mario_2.png-f2b6aeda3f5a8cd50da89b21f07c5539.ctex::
+mario_3.png::CompressedTexture2D/CompressedTexture2D::5110692040791348744::1755438634::1755438493::1::::<><><>0<>0<>c87d3057fb36325058aad162cd9811cf<>res://.godot/imported/mario_3.png-62cb25d488b2a98a4fedaad74dafb255.ctex::
+mario_4.png::CompressedTexture2D/CompressedTexture2D::6904088969315836182::1755438634::1755438493::1::::<><><>0<>0<>19218516bc01f7519f4c045f9d4f6555<>res://.godot/imported/mario_4.png-871af418efcad54337938518034f5079.ctex::
+mario_5.png::CompressedTexture2D/CompressedTexture2D::1065534731160428230::1755438634::1755438493::1::::<><><>0<>0<>bb861b78826d46cac7885f832d141b22<>res://.godot/imported/mario_5.png-e92fc0177fe2c1b0ecf23c6c1caaa21f.ctex::
+mario_6.png::CompressedTexture2D/CompressedTexture2D::1312202526107808199::1755438634::1755438493::1::::<><><>0<>0<>698b3233fac7b679edbf368d6fbdad83<>res://.godot/imported/mario_6.png-989dbe1dd03a40532ae6c17acd4624ab.ctex::
+mario_7.png::CompressedTexture2D/CompressedTexture2D::8837996935879667545::1755438634::1755438493::1::::<><><>0<>0<>8b5b3546043c23e910dca87a6d6480c6<>res://.godot/imported/mario_7.png-5f3ac830800d93062761b9fcc8f0325d.ctex::
+mario_8.png::CompressedTexture2D/CompressedTexture2D::8991140907084173055::1755438634::1755438493::1::::<><><>0<>0<>1de7565b93ba0621825c5d0ddf3201cf<>res://.godot/imported/mario_8.png-4991c49abce22c51ae3221fd79e94ad9.ctex::
+mario_9.png::CompressedTexture2D/CompressedTexture2D::5231997846685599684::1755438634::1755438493::1::::<><><>0<>0<>b7ff35ee42657de5b665fda0b96b435c<>res://.godot/imported/mario_9.png-a63586f53b375d6700275f903b8cf4dd.ctex::
+mario_10.png::CompressedTexture2D/CompressedTexture2D::119988774766531872::1755438634::1755438493::1::::<><><>0<>0<>84a42755ebd8095c1d49993c18eb2943<>res://.godot/imported/mario_10.png-d74b4ec5940a8877fcdee706abeda728.ctex::
+mario_11.png::CompressedTexture2D/CompressedTexture2D::8999365376764028098::1755438634::1755438493::1::::<><><>0<>0<>d9c3e908ffeca51e8db6108bd30f8ec6<>res://.godot/imported/mario_11.png-cc5f3e11fe9ecbf331a6d8058a34beca.ctex::
+mario_12.png::CompressedTexture2D/CompressedTexture2D::2140665478444968206::1755438634::1755438493::1::::<><><>0<>0<>f6ce3b2fcf9a8b3887c9e18dd3f891b7<>res://.godot/imported/mario_12.png-bb9190fa643f6375f5f5cab03041cef3.ctex::
+::res://Sprites/Racers/::1755432432
+SNES - Super Mario Kart - Racers - Bowser.png::CompressedTexture2D/CompressedTexture2D::3225573688381858329::1755431720::1755432432::1::::<><><>0<>0<>79c76a7cf1262f4d7b36656f7a94f3be<>res://.godot/imported/SNES - Super Mario Kart - Racers - Bowser.png-3a4730ba4d6d067a4c970b1469385341.ctex::
+SNES - Super Mario Kart - Racers - Donkey Kong Jr..png::CompressedTexture2D/CompressedTexture2D::7602093858120481026::1755431724::1755432432::1::::<><><>0<>0<>af2abc8172a560f720066a80fafbf206<>res://.godot/imported/SNES - Super Mario Kart - Racers - Donkey Kong Jr..png-c36901646216bac0d37c33e5c03268e1.ctex::
+SNES - Super Mario Kart - Racers - Koopa Troopa.png::CompressedTexture2D/CompressedTexture2D::3798693649185109326::1755431733::1755432432::1::::<><><>0<>0<>120e5ed2fc6a55e5f136f33fd47bf8a7<>res://.godot/imported/SNES - Super Mario Kart - Racers - Koopa Troopa.png-697aadd4951a57e86d5cfcfb99f0f4cb.ctex::
+SNES - Super Mario Kart - Racers - Luigi.png::CompressedTexture2D/CompressedTexture2D::1911523477642319646::1755431741::1755432432::1::::<><><>0<>0<>bfa145a68dbb8cfd6c125935b7fa5de5<>res://.godot/imported/SNES - Super Mario Kart - Racers - Luigi.png-eb79b0f0aa0628b13921cb373b61d16f.ctex::
+SNES - Super Mario Kart - Racers - Mario.png::CompressedTexture2D/CompressedTexture2D::5811437108080198387::1755431694::1755432432::1::::<><><>0<>0<>1f2f8510f6f9eb40391d784dc111171b<>res://.godot/imported/SNES - Super Mario Kart - Racers - Mario.png-2f5d3d0ce2a8f1ba447bd605243cbc1e.ctex::
+SNES - Super Mario Kart - Racers - Peach.png::CompressedTexture2D/CompressedTexture2D::5474658655883983915::1755431755::1755432432::1::::<><><>0<>0<>c3ba951767ab30bf532fc0dcc1cce047<>res://.godot/imported/SNES - Super Mario Kart - Racers - Peach.png-e814a49cda6c3a063b657cf1798238e8.ctex::
+SNES - Super Mario Kart - Racers - Toad.png::CompressedTexture2D/CompressedTexture2D::4781672747662629116::1755431761::1755432432::1::::<><><>0<>0<>9a23e7df36e6e9fc1fe1e9959bf63b68<>res://.godot/imported/SNES - Super Mario Kart - Racers - Toad.png-e9229508be6cbef6ff37f9cc89d3cbd8.ctex::
+SNES - Super Mario Kart - Racers - Yoshi.png::CompressedTexture2D/CompressedTexture2D::8865412155471471548::1755431766::1755432432::1::::<><><>0<>0<>2135fc975e9822520e29856f95bf656c<>res://.godot/imported/SNES - Super Mario Kart - Racers - Yoshi.png-24b9c5da7917f78eb189699b5a3c4be7.ctex::
