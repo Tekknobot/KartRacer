@@ -140,9 +140,11 @@ var _engine_t := 0.0
 var _cam_origin := Vector3.ZERO
 
 # ---- sprite drift framing gates ----
-var anim_right_is_default := false   # set to false if your art's base frames lean LEFT when not flipped
+var anim_right_is_default := true   # set to false if your art's base frames lean LEFT when not flipped
+var sprite_side_swap := 1
 var anim_frame_gain := 4         # nudges angles to reach higher frames easier
 var drift_full_frame_gate_deg := 26.0  # need at least this slip angle (deg) to go past frame 4 while drifting
+var ai_sprite_scale := 1.8   # try 1.8–2.4 for SNES-y readability
 
 # regular (non-drift) turning gates
 var turn_half_frame_gate_deg := 10.0   # < this → cap frames to 2
@@ -219,6 +221,15 @@ var _ext_right := false
 var _ext_accel := false
 var _ext_brake := false
 var _ext_drift := false
+
+# --- AI sprite sizing ---
+# 0 = fixed (always screen-sized), 1 = hybrid (near = perspective, far = fixed), 2 = perspective
+var ai_sprite_mode := 1
+var ai_pixel_size := 0.0115            # fixed-size pixel size for AI when fixed
+var ai_hybrid_switch_dist := 36.0      # meters: beyond this, AI uses fixed-size
+var ai_hybrid_hysteresis := 4.0        # meters: prevents flicker around the switch
+
+var _ai_fixed_now := true             # runtime latch for hybrid switching
 
 func set_external_input_state(left: bool, right: bool, accel: bool, brake: bool, drift: bool) -> void:
 	_ext_left = left
@@ -543,17 +554,53 @@ func _start_hop() -> void:
 
 # ============================ Visuals ============================
 func _update_sprite_pose() -> void:
-	if not (cam and sprite): return
-	# Billboard sprite & place at hop height in front toward camera
-	var to_cam := cam.global_position - global_position
-	var flat_dir := Vector3(to_cam.x, 0.0, to_cam.z).normalized()
+	if not sprite: return
+
 	var base := global_position + Vector3(0.0, sprite_height + hop_y, 0.0)
-	sprite.global_position = base + flat_dir * camera_push
-	if use_billboard:
+	sprite.global_position = base
+
+	# Y-billboard only
+	if "billboard" in sprite:
 		sprite.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
+
+	if external_input:
+		# -------- AI sizing modes --------
+		var mode := ai_sprite_mode
+		var view_cam := get_viewport().get_camera_3d()
+		if view_cam == null: view_cam = cam
+
+		if mode == 0:
+			# Always fixed on screen
+			sprite.fixed_size = true
+			sprite.pixel_size = ai_pixel_size
+			sprite.scale = Vector3.ONE
+		elif mode == 2:
+			# Always perspective
+			sprite.fixed_size = false
+			sprite.scale = Vector3(ai_sprite_scale, ai_sprite_scale, ai_sprite_scale)
+		else:
+			# Hybrid (near = perspective, far = fixed)
+			var dist := 1e9
+			if view_cam != null:
+				dist = (base - view_cam.global_transform.origin).length()
+
+			if (not _ai_fixed_now) and (dist > (ai_hybrid_switch_dist + ai_hybrid_hysteresis)):
+				_ai_fixed_now = true
+			elif _ai_fixed_now and (dist < (ai_hybrid_switch_dist - ai_hybrid_hysteresis)):
+				_ai_fixed_now = false
+
+			if _ai_fixed_now:
+				sprite.fixed_size = true
+				sprite.pixel_size = ai_pixel_size
+				sprite.scale = Vector3.ONE     # IMPORTANT: scale must be 1 in fixed-size mode
+			else:
+				sprite.fixed_size = false
+				sprite.scale = Vector3(ai_sprite_scale, ai_sprite_scale, ai_sprite_scale)
 	else:
-		sprite.billboard = BaseMaterial3D.BILLBOARD_DISABLED
-		sprite.look_at(cam.global_position, Vector3.UP)
+		# -------- Player sprite --------
+		sprite.fixed_size = use_fixed_size
+		sprite.pixel_size = sprite_pixel_size
+		sprite.scale = Vector3.ONE
 
 # >>> Smooth left/right turn animation driving — ANGLE-BASED
 func _update_sprite_turn_anim(dt: float) -> void:
@@ -590,16 +637,14 @@ func _update_sprite_turn_anim(dt: float) -> void:
 	if steer_requires_accel and not _accel_on:
 		ang_deg = 0.0
 
-	# side (consistent & swapped for both drift and non-drift):
-	# priority: steer input → drift_dir (if drifting) → slip angle
+	# side (same logic for drift & non-drift): steer → drift_dir → slip angle
 	var desired_side := 0
 	if abs(_steer_vis) > 0.001:
-		desired_side = -sign(_steer_vis)          # swapped: left input → right lean, and vice versa
+		desired_side = sprite_side_swap * sign(_steer_vis)
 	elif _drift_vis and drift_dir != 0:
-		desired_side = -drift_dir                 # swapped while drifting if no active steer input
+		desired_side = sprite_side_swap * drift_dir
 	elif abs(_vis_turn_angle) > 0.0005:
-		desired_side = -sign(_vis_turn_angle)     # last-resort fallback
-
+		desired_side = sprite_side_swap * sign(_vis_turn_angle)
 
 	# gated targets
 	var target_max_idx: float
@@ -654,7 +699,7 @@ func _update_sprite_turn_anim(dt: float) -> void:
 
 func _setup_camera_and_sprite() -> void:
 	if cam:
-		# Only the player kart owns a camera
+		# Only the player kart owns an active camera
 		cam.current = not external_input
 		cam.transform.origin = Vector3(0, cam_height_offset, 64.0)
 		_cam_origin = cam.transform.origin
@@ -664,10 +709,13 @@ func _setup_camera_and_sprite() -> void:
 		cam.fov = cam_fov
 	if sprite:
 		sprite.visible = true
-		sprite.fixed_size = use_fixed_size
+		# Neutral init; final mode is chosen in _update_sprite_pose()
+		sprite.fixed_size = false
 		sprite.pixel_size = sprite_pixel_size
-		sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
+		sprite.scale = Vector3.ONE
 
+		if "texture_filter" in sprite:
+			sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST
 
 # ============================ Engine Shake ============================
 func _update_engine_shake(dt: float) -> void:
@@ -682,13 +730,14 @@ func _update_engine_shake(dt: float) -> void:
 	var offset := Vector3((sx + steer_wag) * amp, 0.0, sy * amp)
 	sprite.global_position += offset
 	var f_jit = engine_shake_fov_jitter * rpm
-	cam.fov = cam_fov + sx * f_jit
-	var cam_off := Vector3(0.0, 0.0, 0.0)
-	cam_off.x = 0.25 * amp * sy
-	cam_off.y = 0.18 * amp * sx
-	var c := cam.transform
-	c.origin = _cam_origin + cam_off
-	cam.transform = c
+	if cam and cam.current:
+		cam.fov = cam_fov + sx * f_jit
+		var cam_off := Vector3(0.0, 0.0, 0.0)
+		cam_off.x = 0.25 * amp * sy
+		cam_off.y = 0.18 * amp * sx
+		var c := cam.transform
+		c.origin = _cam_origin + cam_off
+		cam.transform = c
 
 # ============================ Trails (tiny) ============================
 func _setup_trails() -> void:

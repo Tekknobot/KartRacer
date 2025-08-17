@@ -46,7 +46,7 @@ point_count = 164
 [node name="World" type="Node3D"]
 
 [node name="Kart" parent="." instance=ExtResource("1_aqk2v")]
-spawn_point = NodePath("..")
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 799.511)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_udxuc")
@@ -60,6 +60,7 @@ path_node = NodePath("../Path3D")
 script = ExtResource("17_udxuc")
 kart_scene = ExtResource("5_036b0")
 path = NodePath("../Path3D")
+spawns_root = NodePath("../Kart")
 
 [node name="Path3D" type="Path3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 741.235)
