@@ -74,13 +74,19 @@ var _shake_t := 0.0
 @export var sprite_is_visual := true                 # set true if `Visual` is an AnimatedSprite3D
 @export var anim_straight: StringName = &"straight"  # idle/straight anim name
 @export var anim_turn_right: StringName = &"turn"    # right-turn anim name (used for both sides)
-@export var steer_anim_threshold: float = 0.10       # below this = use straight
+@export var steer_anim_threshold: float = 0.2       # below this = use straight
 @export var turn_max_frame: int = 4                  # clamp to frames 0..4
 
 @export var sprite: AnimatedSprite3D
 var _checked_anims := false
 
 @export var debug_sprite_drive := true
+
+@export var turn_in_time: float = 0.25   # seconds to go 0 -> 4 while holding steer
+@export var turn_out_time: float = 0.20  # seconds to fall back 4 -> 0 when released
+var _turn_prog := 0.0    # 0..1 across frames 0..4
+var _turn_sign := 0      # -1 left, 0 none, +1 right (for reset on dir change)
+
 
 func _ready() -> void:
 	_start_y = global_position.y
@@ -96,6 +102,7 @@ func _physics_process(delta: float) -> void:
 	_apply_steering(delta)
 	_move_forward(delta)
 	_update_visual(delta)
+	_drive_sprite_from_steer(delta)  # <-- moved here so it always runs
 
 # ---------- Input ----------
 func _read_inputs(delta: float) -> void:
@@ -127,6 +134,9 @@ func _read_inputs(delta: float) -> void:
 	hop_pressed = Input.is_action_pressed(&"kart_hop")
 	hop_just_pressed = Input.is_action_just_pressed(&"kart_hop")
 	hop_just_released = Input.is_action_just_released(&"kart_hop")
+
+	if debug_sprite_drive and abs(steer_input) > 0.0:
+		print("[steer] ", steer_input)
 
 # ---------- Hop/Drift state machine ----------
 func _handle_hop_and_drift(delta: float) -> void:
@@ -258,60 +268,90 @@ func _update_visual(delta: float) -> void:
 
 	_visual.transform = t2   # assign once here
 
-	# after transform is set, update animation/flip based on steer
-	_drive_sprite_from_steer()
-
-func _drive_sprite_from_steer() -> void:
+func _drive_sprite_from_steer(delta: float) -> void:
 	if sprite == null or sprite.sprite_frames == null:
-		if debug_sprite_drive: print("[sprite] missing ref or frames")
 		return
 
-	var s := steer_input
-	var mag = abs(s)
+	# Names may be auto-mapped earlier; just guard existence
+	var has_straight := sprite.sprite_frames.has_animation(anim_straight)
+	var has_turn := sprite.sprite_frames.has_animation(anim_turn_right)
 
-	# 1) Straight / idle region
-	if mag < steer_anim_threshold:
-		# Be permissive: if straight exists, play it; else leave current anim playing.
-		if sprite.sprite_frames.has_animation(anim_straight):
+	# How many frames can we use from the turn anim?
+	var total := 0
+	if has_turn:
+		total = sprite.sprite_frames.get_frame_count(anim_turn_right)
+	if total <= 1:
+		# Nothing to animate; just play straight and bail
+		if has_straight:
 			if StringName(sprite.animation) != anim_straight:
 				sprite.play(anim_straight)
-		else:
-			if debug_sprite_drive: print("[sprite] no straight anim: ", anim_straight)
-		sprite.speed_scale = 1.0
-		sprite.flip_h = false
-		_sync_sprite_material_to_frame()
-		if debug_sprite_drive: print_verbose("[sprite] straight (mag=", mag, ")")
+			else:
+				sprite.play()
 		return
 
-	# 2) Turning: use right-facing anim for both sides (mirror for left)
-	if sprite.sprite_frames.has_animation(anim_turn_right):
+	var frames_to_use = min(turn_max_frame + 1, total)  # e.g. min(5, total)
+	var s := steer_input
+	var mag = abs(s)
+	var turning = mag >= steer_anim_threshold
+
+	# ----- choose / manage clip -----
+	if turning:
+		# Ensure turn clip is selected, then hard-stop so manual frame sticks
 		if StringName(sprite.animation) != anim_turn_right:
 			sprite.play(anim_turn_right)
+		sprite.stop()
+		sprite.speed_scale = 0.0
 	else:
-		if debug_sprite_drive: print("[sprite] no turn anim: ", anim_turn_right, " — falling back to current")
-	# Freeze playback so our manual frame sticks
-	sprite.stop()          # <- stronger than speed_scale=0 on some versions
-	sprite.speed_scale = 0
+		# Straight: play normally
+		if has_straight:
+			if StringName(sprite.animation) != anim_straight:
+				sprite.play(anim_straight)
+			else:
+				sprite.play()
+		sprite.speed_scale = 1.0
+		sprite.flip_h = false
 
-	# Frame selection (0..turn_max_frame, clamped to anim length)
-	var total := sprite.sprite_frames.get_frame_count(StringName(sprite.animation))
-	var max_idx := turn_max_frame
-	if total > 0:
-		max_idx = min(turn_max_frame, total - 1)
+	# ----- progress phase -----
+	if turning:
+		# reset phase when direction flips so it plays 0->4 again
+		var sign := 0
+		if s > 0.0:
+			sign = 1
+		elif s < 0.0:
+			sign = -1
+		if sign != 0 and sign != _turn_sign:
+			_turn_prog = 0.0
+			_turn_sign = sign
 
-	# map |steer| from [threshold..1] -> [0..max_idx]
-	var t = (mag - steer_anim_threshold) / max(0.0001, (1.0 - steer_anim_threshold))
-	t = clamp(t, 0.0, 1.0)
-	var idx := int(floor(t * float(max_idx)))
-	idx = clamp(idx, 0, max_idx)
+		# advance toward 1.0 over turn_in_time
+		var rate_in := 1.0
+		if turn_in_time > 0.0:
+			rate_in = delta / turn_in_time
+		_turn_prog += rate_in
+		if _turn_prog > 1.0:
+			_turn_prog = 1.0
+	else:
+		# decay back toward 0 over turn_out_time
+		var rate_out := 1.0
+		if turn_out_time > 0.0:
+			rate_out = delta / turn_out_time
+		_turn_prog -= rate_out
+		if _turn_prog < 0.0:
+			_turn_prog = 0.0
+		_turn_sign = 0
 
-	# Apply frame, then mirror, then push texture to override
-	sprite.set_frame_and_progress(idx, 0.0)
-	sprite.flip_h = (s < 0.0)
-	_sync_sprite_material_to_frame()
+	# ----- pick frame from phase -----
+	# phase 0..1 → frame 0..frames_to_use-1
+	var idx := int(floor(_turn_prog * float(frames_to_use - 1)))
+	if idx < 0:
+		idx = 0
+	if idx > frames_to_use - 1:
+		idx = frames_to_use - 1
 
-	if debug_sprite_drive:
-		print_verbose("[sprite] turn anim=", sprite.animation, " frame=", idx, "/", max_idx, " mag=", mag, " flip_h=", sprite.flip_h)
+	# apply frame and mirror for left
+	if turning:
+		sprite.set_frame_and_progress(idx, 0.0)
+		sprite.flip_h = (s < 0.0)
 
 func _init_sprite_links() -> void:
 	if sprite == null:
