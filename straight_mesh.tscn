@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://ndjktbg5uyi7"]
+
+[ext_resource type="Shader" uid="uid://b54mdg1ahou65" path="res://TrackShader.gdshader" id="1_wduoy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_udxuc"]
+render_priority = 0
+shader = ExtResource("1_wduoy")
+shader_parameter/asphalt_color = Vector3(0.12, 0.12, 0.13)
+shader_parameter/shoulder_color = Vector3(0.55, 0.56, 0.58)
+shader_parameter/grass_color = Vector3(0.11, 0.35, 0.12)
+shader_parameter/line_color = Vector3(0.95, 0.95, 0.92)
+shader_parameter/road_width = 0.52
+shader_parameter/shoulder_width = 0.04
+shader_parameter/edge_line_width = 0.01
+shader_parameter/center_line_width = 0.012
+shader_parameter/dash_length = 0.08
+shader_parameter/dash_gap = 0.06
+shader_parameter/v_scroll = 0.0
+shader_parameter/uv_scale = Vector2(1, 3)
+shader_parameter/edge_softness = 0.002
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ikiii"]
+material = SubResource("ShaderMaterial_udxuc")
+size = Vector2(200, 200)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_70uel"]
+size = Vector3(200, 8, 200)
+
+[node name="StraightMesh" type="Node3D"]
+
+[node name="Straight" type="StaticBody3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Straight"]
+mesh = SubResource("PlaneMesh_ikiii")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Straight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 0)
+shape = SubResource("BoxShape3D_70uel")

@@ -1,14 +1,14 @@
+AnimatedSprite3D
+AnimatedSprite2D
 Node3D
+CharacterBody3D
 StaticBody3D
 Camera3D
 SpringArm3D
 AnimationPlayer
-AnimatedSprite3D
 CollisionShape3D
-CharacterBody3D
 MeshInstance3D
 DirectionalLight3D
 AudioStreamPlayer3D
 Path3D
 Node
-TileMap

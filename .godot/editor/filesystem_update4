@@ -4,3 +4,7 @@ res://Kart.gd
 res://InputSetup.gd
 res://CameraRig.gd
 res://TrackTurnShader.gdshader
+res://VisualBillboardYaw.gd
+res://Track.gd
+res://turn_mesh.tscn
+res://MaterialOveride.gd
