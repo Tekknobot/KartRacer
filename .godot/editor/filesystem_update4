@@ -6,3 +6,7 @@ res://RaceManager.gd
 res://TrackPathBuilder.gd
 res://kart.tscn
 res://AIDriver.tscn
+res://CameraRig.gd
+res://LookAtCamera.gd
+res://SetupWorld.gd
+res://FollowCamera.gd
