@@ -16,8 +16,7 @@ config/features=PackedStringArray("4.4")
 
 [autoload]
 
-InputDefaults="*res://InputDefaults.gd"
-Main="*res://Main.gd"
+InputSetup="*res://InputSetup.gd"
 
 [display]
 
@@ -43,3 +42,4 @@ brake={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)

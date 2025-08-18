@@ -1,12 +1,6 @@
 res://world.tscn
 res://TrackShader.gdshader
 res://Kart.gd
-res://AIDriver.gd
-res://RaceManager.gd
-res://TrackPathBuilder.gd
-res://kart.tscn
-res://AIDriver.tscn
+res://InputSetup.gd
 res://CameraRig.gd
-res://LookAtCamera.gd
-res://SetupWorld.gd
-res://FollowCamera.gd
+res://TrackTurnShader.gdshader
